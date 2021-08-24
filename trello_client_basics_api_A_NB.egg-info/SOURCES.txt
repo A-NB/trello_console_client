@@ -1,0 +1,7 @@
+LICENSE
+README.md
+setup.py
+trello_client_basics_api_A_NB.egg-info/PKG-INFO
+trello_client_basics_api_A_NB.egg-info/SOURCES.txt
+trello_client_basics_api_A_NB.egg-info/dependency_links.txt
+trello_client_basics_api_A_NB.egg-info/top_level.txt
