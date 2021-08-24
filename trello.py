@@ -274,26 +274,26 @@ def remove_card(name):
         print(f"Карточка '{card_name}' успешно удалена из колонки '{column_name}'!")
 
 
-# """ Основная программа """   
-# if __name__ == "__main__":    
-#     if len(sys.argv) <= 2:    
-#         read()    
-#     elif str(sys.argv[1]) == 'create':
-#         if sys.argv[2] == 'card':
-#             create_card(str(sys.argv[3]), str(sys.argv[4])) # Например: create card new_card Готово или create card new_card 'new column'
-#                                                             # (названия из одного слова можно вводить без кавычек).
-#         elif sys.argv[2] == 'column':
-#             create_column(str(sys.argv[3]))                 # Например: create column new_column
-#                                                             # (названия из одного слова можно вводить без кавычек).
-#     elif sys.argv[1] == 'move':
-#         move_card(str(sys.argv[2]), str(sys.argv[3]))       # Например: move new_card 'В процессе'
-#                                                             # (названия из одного слова можно вводить без кавычек).  
-#     elif sys.argv[1] == 'remove':
-#         if sys.argv[2] == 'card':
-#             remove_card(str(sys.argv[3]))                   # Например: remove card new_card (названия из одного слова можно вводить без кавычек.
-#         elif sys.argv[2] == 'column':
-#             remove_column(str(sys.argv[3]))                 # Например: remove column new_column
-#                                                             # (названия из одного слова можно вводить без кавычек).          
+""" Основная программа """   
+if __name__ == "__main__":    
+    if len(sys.argv) <= 2:    
+        read()    
+    elif str(sys.argv[1]) == 'create':
+        if sys.argv[2] == 'card':
+            create_card(str(sys.argv[3]), str(sys.argv[4])) # Например: create card new_card Готово или create card new_card 'new column'
+                                                            # (названия из одного слова можно вводить без кавычек).
+        elif sys.argv[2] == 'column':
+            create_column(str(sys.argv[3]))                 # Например: create column new_column
+                                                            # (названия из одного слова можно вводить без кавычек).
+    elif sys.argv[1] == 'move':
+        move_card(str(sys.argv[2]), str(sys.argv[3]))       # Например: move new_card 'В процессе'
+                                                            # (названия из одного слова можно вводить без кавычек).  
+    elif sys.argv[1] == 'remove':
+        if sys.argv[2] == 'card':
+            remove_card(str(sys.argv[3]))                   # Например: remove card new_card (названия из одного слова можно вводить без кавычек.
+        elif sys.argv[2] == 'column':
+            remove_column(str(sys.argv[3]))                 # Например: remove column new_column
+                                                            # (названия из одного слова можно вводить без кавычек).          
 
 
 """
@@ -304,20 +304,20 @@ def remove_card(name):
 # print('Now run "read()"')
 # read()
 
-print('Now run "create_card()"')
-create_card("simple_card", "new_column")
+# print('Now run "create_card()"')
+# create_card("simple_card", "new_column")
 
-print('Now run "create_column()"')
-create_column("next_column")
+# print('Now run "create_column()"')
+# create_column("next_column")
 
-print('Now run "move_card()"')
-move_card("simple_card", "next_column")
+# print('Now run "move_card()"')
+# move_card("simple_card", "next_column")
 
-print('Now run "create_card()"')
-create_card("simple_card", "next_column")
+# print('Now run "create_card()"')
+# create_card("simple_card", "next_column")
 
-print('Now run "remove_card()"')
-remove_card("simple_card")
+# print('Now run "remove_card()"')
+# remove_card("simple_card")
 
-print('Now run "remove_column()"')
-remove_column("new_column")
+# print('Now run "remove_column()"')
+# remove_column("new_column")
