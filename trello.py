@@ -205,7 +205,6 @@ def find_card(name, action):
         print(f"{s}\n{'-' * len(s)}")
         for i in range(len(card_ids)):
             # ... и перечисляем их в виде нумерованного списка:
-            # print(f"{str(i + 1)}: '{card_ids[i][1]}' в колонке '{card_ids[i][2]}' (позиция: {card_ids[i][3]} из {len(column_data)}, метки: {card_ids[i][4]}, цвет фона: {card_ids[i][5]}, фоновое изображение: {'есть' * bool(card_ids[i][6])}, последняя активность: {card_ids[i][7]})")
             print(f"{str(i + 1)}: '{card_ids[i][1]}' в {card_ids[i][3]} колонке из {len(column_data)} '{card_ids[i][2]}' (метки: {card_ids[i][4]}, цвет фона: {card_ids[i][5]}, фоновое изображение: {'есть' * bool(card_ids[i][6]) + 'нет' * (not card_ids[i][6])}, последняя активность: {card_ids[i][7]})")            
         # Предлагаем пользователю выбрать номер нужной карточки или "передумать":
         s = f"Введите с клавиатуры номер той карточки, которую Вы хотите {action}"
