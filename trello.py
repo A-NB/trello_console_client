@@ -54,7 +54,7 @@ def read():
     # Получим название доски:
     board_name = requests.get(base_url.format('boards')+ '/' + board_id, headers = {"Accept": "application/json"}, params=auth_params).json()['name']
     s = f"На доске '{board_name}' найдено {len(column_data)} колонок:"
-    print(f"\n{s}\n{'-' * len(s)}")
+    print(f"{s}\n{'-' * len(s)}")
     # Для каждой колонки ... 
     for i in range(len(column_data)):      
         # ... получим данные всех карточек в колонке, ...
@@ -71,7 +71,7 @@ def read():
             print(f"{' ' * len(str(i + 1) + ' )')}{j + 1}. {card_data[j]['name']}")        
 
 """ Поиск колонки по имени. Функция возвращает список из двух значений: id колонки и её названия. """            
-def find_column(column_name, action = 'использовать'): #, column_data
+def find_column(column_name, action = 'использовать'):
     column_data = get_column_data()
     columns_list = [] # Список списков для хранения данных о найденных колонках в формате:
                       # [id колонки, имя колонки, её порядковый номер на доске]
@@ -86,7 +86,7 @@ def find_column(column_name, action = 'использовать'): #, column_dat
                                 )
     if len(columns_list) > 1: # Если найдено более одной колонки с именем column_name, ...
         # ... выводим в консоль информацию о количестве всех найденных колонок ...
-        s = f"\nНайдено колонок с именем '{column_name}': {str(len(columns_list))}"
+        s = f"Найдено колонок с именем '{column_name}': {str(len(columns_list))}"
         print(f"{s}\n{'-' * len(s)}")
         for i in range(len(columns_list)):
             # ... и перечисляем их в виде нумерованного списка:
@@ -139,6 +139,7 @@ def remove_column(par_colunm_name):
 def new_card(name, column_name):
     # Ищем нужную колонку:        
     column_id, column_name = find_column(column_name)
+    # Если нужнуая колонка найдена:
     if column_id:
         # Ищем карточки с похожими названиями:
         card_data = requests.get(base_url.format('lists') + '/' + column_id + '/cards', params=auth_params).json()
@@ -146,7 +147,7 @@ def new_card(name, column_name):
         # Если похожие карточки найдены:
         if name.lower() in map(lambda s: s.lower(), card_data):
             print(f"В выбранной Вами колонке '{column_name}' найдено карточек с именем '{name}': {len(card_data)}")
-            print("Вы всё равно хотите продолжить?\nДля подтверждения введите латиницей символ 'y'")
+            print("Вы всё равно хотите продолжить?\nДля подтверждения введите латиницей символ 'y' (для отмены нажмите 'Enter')")
             if not input() in ['y', 'Y', 'н', 'Н']: # Если ничего не введено или введено
                                                     # не ['y', 'Y', 'н', 'Н'] и нажат Enter, ...
                 print(f"Создание карточки '{name}' в колонке '{column_name}' отменено.") 
@@ -163,7 +164,7 @@ def create_card(name, column_name):
     # Создаём новую задачу (карточку):
     if new_card(name, column_name) == False: # Если колонки column_name не существует, ...
         print(f"Колонка с именем '{column_name}' не найдена! Вы хотите её создать?")
-        print(f"Для подтверждения введите латиницей символ 'y'")
+        print(f"Для подтверждения введите латиницей символ 'y' (для отмены нажмите 'Enter')")
         if input() in ['y', 'Y', 'н', 'Н']:
             # ... создаём новую колонку:
             create_column(column_name)
@@ -203,7 +204,7 @@ def find_card(name, action):
                                )    
     if len(card_ids) > 1: # Если найдено более одной карточки с именем name, ...
         # ... выводим в консоль информацию о количестве всех найденных карточек ...
-        s = f"\nНайдено карточек с именем '{name}': {str(len(card_ids))}"
+        s = f"Найдено карточек с именем '{name}': {str(len(card_ids))}"
         print(f"{s}\n{'-' * len(s)}")
         for i in range(len(card_ids)):
             # ... и перечисляем их в виде нумерованного списка:
@@ -220,7 +221,7 @@ def find_card(name, action):
                     # Если в колонке, куда планируется перемещение, уже есть карточка с таким же именем:
                     if action[:12] == 'Переместить' and card_ids[int(enter) - 1][1] == column_name:
                         print(f"Карточка с именем '{name}' уже существует в выбранной Вами колонке '{column_name}'")
-                        print("Вы всё равно хотите продолжить?\nДля подтверждения введите латиницей символ 'y'")
+                        print("Вы всё равно хотите продолжить?\nДля подтверждения введите латиницей символ 'y' (для отмены нажмите 'Enter')")
                         if not input() in ['y', 'Y', 'н', 'Н']: # Если ничего не введено или введено
                                                                 # не ['y', 'Y', 'н', 'Н'] и нажат Enter, ...
                             print(f"Перемещение отменено.") 
@@ -249,18 +250,18 @@ def move_card(name, par_column_name):
     card_id, card_name = find_card(name, f"переместить в колонку '{par_column_name}'")[:2]
     if card_id:
         # Теперь, когда у нас есть id карточки, которую мы хотим переместить, ищем нужную колонку:   
-        column_id, column_name = find_column(par_column_name) #, get_column_data())
+        column_id, column_name = find_column(par_column_name)
         if column_id:
             # Если колонка найдена, выполним запрос к API для перемещения карточки в нужную колонку: 
             requests.put(base_url.format('cards') + '/' + card_id + '/idList', data={'value': column_id, **auth_params}) 
             print(f"Карточка '{card_name}' успешно перемещена в колонку '{column_name}'!")
         else: # Если колонка не найдена, ...
             print(f"Колонка с именем '{par_column_name}' не найдена! Вы хотите её создать?")
-            print(f"Для подтверждения введите латиницей символ 'y'")
+            print(f"Для подтверждения введите латиницей символ 'y' (для отмены нажмите 'Enter')")
             if input() in ['y', 'Y', 'н', 'Н']:
                 # ... после подтверждения создаём новую колонку и перемещаем в неё нашу карточку:
                 create_column(par_column_name)
-                column_id, column_name = find_column(par_column_name) #, get_column_data())
+                column_id, column_name = find_column(par_column_name)
                 requests.put(base_url.format('cards') + '/' + card_id + '/idList', data={'value': column_id, **auth_params}) 
                 print(f"Карточка '{card_name}' успешно перемещена во вновь созданную колонку '{column_name}'!")                
             else: # Если ничего не введено или введено не ['y', 'Y', 'н', 'Н'] и нажат Enter:
@@ -276,10 +277,24 @@ def remove_card(name):
         print(f"Карточка '{card_name}' успешно удалена из колонки '{column_name}'!")
 
 
-""" Основная программа """   
+"""
+++++++++++++++++++++++++++++++++++++++++  Основная программа.  ++++++++++++++++++++++++++++++++++++++
+
+Для её запуска откройте командную строку в директории, где расположен этот файл trello.py и введите:
+
+    python trello.py и через пробел параметры запуска как на примерах ↓↓↓
+
+Пример ввода команды с параметрами запуска функции для создания новой колонки:
+
+    python trello.py create column new_column
+
+В зависимости от конфигурации вашей системы возможно вместо python необходимо будет вводить python3
+
+"""  
+
 if __name__ == "__main__":    
-    if len(sys.argv) <= 2:    
-        read()    
+    if len(sys.argv) <= 2:
+        read()                                              # read
     elif str(sys.argv[1]) == 'create':
         if sys.argv[2] == 'card':
             create_card(str(sys.argv[3]), str(sys.argv[4])) # Например: create card new_card Готово или create card new_card 'new column'
@@ -294,32 +309,55 @@ if __name__ == "__main__":
         if sys.argv[2] == 'card':
             remove_card(str(sys.argv[3]))                   # Например: remove card new_card (названия из одного слова можно вводить без кавычек.
         elif sys.argv[2] == 'column':
-            remove_column(str(sys.argv[3]))                 # Например: remove column new_column
+            remove_column(str(sys.argv[3]))                 # Например: remove column 'new column'
                                                             # (названия из одного слова можно вводить без кавычек).          
 
 
 """
+Эти ↓↓↓ строки помогут в некотором роде протестировать возможности программы и её баги (надеюсь, их нет :) ).
 Если вдруг очень сильно захочется выполнить эти ↓↓↓ строки кода, можно закомментировать блок ↑↑↑ 'Основная программа',
 раскомментировать эти ↓↓↓ строки и запустить программу из редактора обычным способом.
 
 """
-# print('Now run "read()"')
+
+# s = '* Now run read() *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # read()
+# s = '* End of the read() *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "create_card()"')
+# s = '* Now run create_card("simple_card", "new_column") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # create_card("simple_card", "new_column")
+# s = '* End of the create_card("simple_card", "new_column") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "create_column()"')
+# s = '* Now run create_column("next_column") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # create_column("next_column")
+# s = '* End of the create_column("next_column") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "move_card()"')
+# s = '* Now run move_card("simple_card", "next_column") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # move_card("simple_card", "next_column")
+# s = '* End of the move_card("simple_card", "next_column") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "create_card()"')
+# s = '* Now run create_card("simple_card", "next_column") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # create_card("simple_card", "next_column")
+# s = '* End of the create_card("simple_card", "next_column") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "remove_card()"')
+# s = '* Now run remove_card("simple_card") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # remove_card("simple_card")
+# s = '* End of the remove_card("simple_card") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
 
-# print('Now run "remove_column()"')
+# s = '* Now run remove_column("new_column") *'
+# print(f"{'*' * len(s)}\n{s}\n")
 # remove_column("new_column")
+# s = '* End of the remove_column("new_column") *'
+# print(f"\n{s}\n{'*' * len(s)}\n")
