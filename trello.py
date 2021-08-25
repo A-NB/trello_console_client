@@ -53,22 +53,22 @@ def read():
     column_data = get_column_data()
     # Получим название доски:
     board_name = requests.get(base_url.format('boards')+ '/' + board_id, headers = {"Accept": "application/json"}, params=auth_params).json()['name']
-    s = f"На доске '{board_name}' найдено:"
+    s = f"На доске '{board_name}' найдено {len(column_data)} колонок:"
     print(f"\n{s}\n{'-' * len(s)}")
     # Для каждой колонки ... 
-    for column in column_data:      
+    for i in range(len(column_data)):      
         # ... получим данные всех карточек в колонке, ...
-        card_data = requests.get(base_url.format('lists') + '/' + column['id'] + '/cards', params=auth_params).json() 
+        card_data = requests.get(base_url.format('lists') + '/' + column_data[i]['id'] + '/cards', params=auth_params).json() 
         # ... выведем в консоль для каждой колонки её название и количество карточек в ней:
-        print(f"В колонке '{column['name']}' количество карточек = {str(len(card_data))}:")
+        print(f"{i + 1}) В колонке '{column_data[i]['name']}' количество карточек = {str(len(card_data))}:")
         # Если в колонке нет карточек, ...
         if not card_data: 
             # ... выведем соответствующее сообщение:     
-            print('\t' + 'Нет карточек!')
+            print(f"{' ' * len(str(i + 1) + ' )')}Нет карточек!")
             continue
         # Для непустых колонок выводим названия всех имеющихся в них карточек:      
-        for card in card_data:      
-            print('\t' + card['name'])
+        for j in range(len(card_data)): 
+            print(f"{' ' * len(str(i + 1) + ' )')}{j + 1}. {card_data[j]['name']}")        
 
 """ Поиск колонки по имени. Функция возвращает список из двух значений: id колонки и её названия. """            
 def find_column(column_name, action = 'использовать'): #, column_data
@@ -117,7 +117,7 @@ def find_column(column_name, action = 'использовать'): #, column_dat
         return [None, None] # ... выходим из программы.
     return [column_id, column_name]
 
-""" Создание колонки (она становится последней). Для выбора другой позиции измените параметр 'pos' (см. документацию). """
+""" Создание колонки (она становится последней). Для выбора другой позиции измените параметр 'pos' (см. документацию Trello API). """
 def create_column(column_name):
     requests.post(base_url.format('lists'), data={'name': column_name, 'idBoard': get_column_data()[0]['idBoard'], 'pos': 'bottom', **auth_params})
     print(f"Новая колонка '{column_name}' успешно создана!") 
@@ -179,6 +179,7 @@ def find_card(name, action):
     card_ids = [] # Список списков для хранения найденных карточек в формате:
                   # [id карточки, название карточки, название колонки, позиция колонки на доске,
                   # цвет меток, цвет фона, наличие картинки, дата и время последней активности]
+                  # Список признаков можно изменить по своему желанию (см. документацию Trello API).
     # Для каждой колонки ...
     for i in range(len(column_data)): 
         # ... получим данные всех карточек в колонке:   
