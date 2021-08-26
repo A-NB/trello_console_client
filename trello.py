@@ -66,9 +66,9 @@ def read():
             # ... выведем соответствующее сообщение:     
             print(f"{' ' * len(str(i + 1) + ' )')}Нет карточек!")
             continue
-        # Для непустых колонок выводим названия всех имеющихся в них карточек:      
+        # Для непустых колонок выводим названия и некоторые свойства всех имеющихся в них карточек:      
         for j in range(len(card_data)): 
-            print(f"{' ' * len(str(i + 1) + ' )')}{j + 1}. {card_data[j]['name']}")        
+            print(f"{' ' * len(str(i + 1) + ' )')}{j + 1}. '{card_data[j]['name']}' (id: {card_data[j]['id']}, метки: {[card_data[j]['labels'][k]['color'] for k in range(len(card_data[j]['labels']))]}, цвет фона: {card_data[j]['cover']['color']}, фоновое изображение: {'есть' * bool(card_data[j]['cover']['idUploadedBackground']) + 'нет' * (not card_data[j]['cover']['idUploadedBackground'])}, последняя активность: {card_data[j]['dateLastActivity']})")  
 
 """
 Поиск колонки по имени. Функция возвращает список из трёх значений: id колонки, её названия и специального
